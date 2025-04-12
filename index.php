@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         * {
             margin: 0;
@@ -133,13 +134,13 @@
     }
 
     </style>
-    <title>Login</title>
+    <title>Rayox | Login</title>
 </head>
 <body>
 
     <div class="login-container">
         <div class="login-header">
-            <h1>Selamat Datang</h1>
+            <h1>Rayox.site</h1>
             <p>Masukan Username & Password untuk login</p>
         </div>
 
@@ -164,7 +165,7 @@
 
         </form>
         <div class="register-link">
-        Belum punya akun? <a href="register.php">Daftar disini</a>
+        Belum punya akun? <a href="/register">Daftar disini</a>
         </div>
     </div>
 

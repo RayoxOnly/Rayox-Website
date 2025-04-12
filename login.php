@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Verifikasi password
         if (password_verify($password, $user['password'])) {
             $_SESSION['user'] = $user['username'];
-            header("Location: dashboard.php");
+            header("Location: /dashboard");
             exit();
         } else {
             header("Location: index.php?error=Password salah");

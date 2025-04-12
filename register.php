@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rayox | Register</title>
 <style>
 /* Gunakan style yang sama seperti index.php */
 body {
@@ -49,7 +50,7 @@ body {
 .login-button {
     width: 100%;
     padding: 0.75rem;
-    background: #10b981;
+    background: #4f46e5;
     color: white;
     border: none;
     border-radius: 0.5rem;
@@ -58,7 +59,7 @@ body {
     cursor: pointer;
 }
 .login-button:hover {
-    background: #059669;
+    background: #4338ca;
 }
 .register-link {
     text-align: center;
