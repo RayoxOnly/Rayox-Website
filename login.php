@@ -1,227 +1,38 @@
-<!DOCTYPE html>
 <?php
 session_start();
-include 'db_connection.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Koneksi ke database
+$conn = new mysqli("localhost", "admin", "admin123", "login_app"); // Ganti sesuai user/password MySQL kamu
 
-if(isset($_POST['username'])) {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = mysqli_query($conn, $query);
-    
-    if(!$result) {
-        die("Query error: " . mysqli_error($conn));
-    }
-    
-    if(mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $_SESSION['username'] = $username;
-        $_SESSION['logged_in'] = true;
-        
-        header("Location: absen.php");
-        exit();
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil data
+$username = $_POST['username'] ?? '';
+$password = $_POST['password'] ?? '';
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Cek apakah user ada
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        // Verifikasi password
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user'] = $user['username'];
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            header("Location: index.php?error=Password salah");
+            exit();
+        }
     } else {
-        $_SESSION['error'] = "Username atau Password salah";
+        header("Location: index.php?error=Username tidak ditemukan");
+        exit();
     }
 }
 ?>
-<html>
-<head>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .login-container {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 400px;
-            margin: 1rem;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-header h1 {
-            color: #333;
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 0.875rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            transition: border-color 0.15s ease;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #4f46e5;
-        }
-
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 1.5rem;
-        }
-
-        .forgot-password a {
-            color: #4f46e5;
-            font-size: 0.875rem;
-            text-decoration: none;
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.75rem;
-            background: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-        }
-
-        .login-button:hover {
-            background: #4338ca;
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.875rem;
-            color: #666;
-        }
-
-        .register-link a {
-            color: #4f46e5;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .error-message {
-        background-color: #fee2e2;
-        border: 1px solid #ef4444;
-        color: #991b1b;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        text-align: center;
-        font-size: 0.875rem;
-    }
-
-    /* Animasi fade out */
-    @keyframes fadeOut {
-        from {opacity: 1;}
-        to {opacity: 0;}
-    }
-
-    .fade-out {
-        animation: fadeOut 3s ease-out forwards;
-    }
-
-    </style>
-    <title>Login</title>
-</head>
-<body>
-
-    <div class="login-container">
-        <div class="login-header">
-            <h1>Selamat Datang</h1>
-            <p>Masukan Username & Password untuk login</p>
-        </div>
-        
-        <?php
-    if(isset($_SESSION['error'])) {
-        echo "<div class='error-message' id='errorMessage'>" . $_SESSION['error'] . "</div>";
-        unset($_SESSION['error']);
-    }
-    ?>
-
-    <!-- Setelah login-header dan sebelum form -->
-<?php
-if(isset($_SESSION['success'])) {
-    echo "<div class='success-message'>" . $_SESSION['success'] . "</div>";
-    unset($_SESSION['success']);
-}
-?>
-
-        <form method="POST" action="">
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Masukan username anda" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Masukan password anda" required>
-            </div>
-            
-            <button type="submit" class="login-button">Login</button>
-            
-        </form>
-        <div class="register-link">
-        Belum punya akun? <a href="register.php">Daftar disini</a>
-        </div>
-    </div>
-
-    <script>
-    // Cek jika ada pesan error
-    const errorMessage = document.getElementById('errorMessage');
-    if (errorMessage) {
-        // Tambahkan class fade-out setelah 3 detik
-        setTimeout(() => {
-            errorMessage.classList.add('fade-out');
-        }, 3000);
-        
-        // Hapus element setelah animasi selesai
-        setTimeout(() => {
-            errorMessage.style.display = 'none';
-        }, 6000);
-    }
-</script>
-
-</body>
-</html>
