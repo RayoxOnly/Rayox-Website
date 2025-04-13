@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# Redirect /index.php or /index.html to /
+RewriteRule ^index\.(php|html)$ / [R=301,L]
+
+# Remove .php or .html extension if the file exists
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]

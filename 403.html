@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Forbidden | Akses Ditolak</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            margin-bottom: 20px;
+        }
+
+        .icon img {
+            width: 150px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+        }
+
+        .security {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .security h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .security p {
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .icon img {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <img src="/assets/403" alt="403 Forbidden Icon">
+        </div>
+        <h1>403 Forbidden</h1>
+        <p>Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+        <p>Rayox security system telah mencegah permintaan Anda.</p>
+        <a href="/" class="btn">Kembali ke Beranda</a>
+
+        <div class="security">
+            <h2>Mengapa saya melihat halaman ini?</h2>
+            <p>Halaman ini muncul karena beberapa kemungkinan berikut:</p>
+            <ul style="text-align: left; margin-left: 40px; margin-top: 10px;">
+                <li>Anda mencoba mengakses area yang memerlukan otentikasi</li>
+                <li>Anda tidak memiliki izin yang diperlukan untuk konten ini</li>
+                <li>Rayox security system mendeteksi aktivitas yang mencurigakan</li>
+            </ul>
+            <p style="margin-top: 20px;">Jika Anda yakin ini adalah kesalahan, silakan hubungi Rayox.</p>
+        </div>
+    </div>
+</body>
+</html>
