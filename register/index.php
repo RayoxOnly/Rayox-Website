@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rayox | Register</title>
+<title>Register | Rayox</title>
 <style>
 /* Gunakan style yang sama seperti index.php */
 body {
@@ -97,6 +97,7 @@ body {
 <div class="login-container">
 <div class="login-header">
 <h1>Daftar Akun</h1>
+<p>Masukan Username & Password untuk Register</p>
 </div>
 
 <?php if (isset($_GET['error'])): ?>
@@ -122,7 +123,7 @@ body {
 </form>
 
 <div class="register-link">
-Sudah punya akun? <a href="index.php">Login disini</a>
+Sudah punya akun? <a href="/login">Login disini</a>
 </div>
 </div>
 

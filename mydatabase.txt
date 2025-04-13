@@ -1,0 +1,28 @@
+-- File: mydatabase.txt (Modifikasi dan Tambahan)
+
+CREATE DATABASE IF NOT EXISTS login_app;
+USE login_app;
+
+-- Modifikasi tabel users, tambahkan kolom 'role'
+DROP TABLE IF EXISTS users; -- Hapus jika sudah ada untuk membuat ulang dengan struktur baru
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(10) NOT NULL DEFAULT 'user', -- Tambahkan kolom role, defaultnya 'user'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Buat tabel baru untuk suggestions (saran)
+DROP TABLE IF EXISTS suggestions; -- Hapus jika sudah ada untuk membuat ulang
+CREATE TABLE suggestions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,               -- Kolom untuk menyimpan ID user yang memberi saran
+    suggestion_text TEXT NOT NULL,      -- Teks saran
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Waktu saran dikirim
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- Relasi ke tabel users
+);
+
+-- Contoh cara menjadikan user 'admin' (Jalankan ini manual di database MySQL/phpMyAdmin)
+-- Ganti 'nama_admin' dengan username yang ingin kamu jadikan admin
+-- UPDATE users SET role = 'admin' WHERE username = 'nama_admin';
