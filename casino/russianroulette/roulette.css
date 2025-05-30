@@ -1,0 +1,241 @@
+/* /casino/russianroulette/roulette.css */
+
+/* Style Umum untuk Container Lobi & Game */
+.rr-lobby-container, .rr-game-container, .rr-result-container {
+    max-width: 700px; /* Sesuaikan lebar */
+}
+
+/* Style untuk Section */
+.rr-section {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+}
+.rr-section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(79, 70, 229, 0.1);
+    font-size: 1.5rem;
+    color: #4f46e5; /* Warna dari main.css */
+}
+.rr-section h2 i { margin-right: 10px; }
+
+/* Form Styling */
+.rr-form .form-group {
+    margin-bottom: 1rem;
+}
+.rr-form label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+.rr-form input[type="number"],
+.rr-form select {
+    /* Menggunakan style dari main.css jika sudah sesuai */
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+.rr-form button {
+    margin-top: 0.5rem; /* Jarak tombol dari input terakhir */
+}
+
+/* Tabel Lobi */
+.table-container {
+    margin-top: 0; /* Hapus margin atas jika tidak perlu */
+}
+.table thead th {
+    background-color: #f0f5ff; /* Warna header tabel lebih terang */
+}
+.table td.actions form {
+    margin: 0; /* Hapus margin default form */
+}
+.table td.no-data {
+    text-align: center;
+    color: #6b7280;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Catatan di bawah tabel */
+.rr-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 1rem;
+}
+
+/* Navigasi Bawah */
+.rr-navigation {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+.rr-navigation a, .rr-navigation form {
+    margin: 0 5px;
+}
+
+
+/* --- Game Page Specific Styles --- */
+.rr-game-container .page-header h1 {
+    font-size: 1.8rem; /* Judul game lebih kecil */
+}
+.rr-game-container .page-header .subtitle .money {
+    font-weight: bold;
+    color: #10b981; /* Hijau untuk uang */
+}
+
+.rr-players {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+    text-align: center;
+    gap: 1rem;
+}
+.rr-player-card {
+    padding: 1rem 1.5rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background-color: #f9fafb;
+    flex: 1; /* Agar lebarnya sama */
+    transition: all 0.3s ease;
+}
+.rr-player-card.active-turn {
+    border-color: #4f46e5;
+    background-color: #eef2ff; /* Warna background lebih subtle */
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.15);
+    transform: scale(1.03);
+}
+.rr-player-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #334155;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rr-player-card .player-status {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+    min-height: 1.2em; /* Jaga tinggi agar tidak lompat */
+    display: block;
+}
+.rr-player-card.active-turn .player-status {
+    color: #4f46e5;
+    font-weight: bold;
+}
+
+
+.rr-chambers {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    background-color: rgba(0,0,0,0.05);
+    padding: 1rem;
+    border-radius: 10px;
+}
+.rr-chamber {
+    display: inline-block;
+    width: 45px; height: 45px; /* Sedikit lebih besar */
+    line-height: 45px; text-align: center;
+    border: 2px solid #9ca3af; /* Abu-abu netral */
+    border-radius: 50%;
+    margin: 6px;
+    font-weight: bold;
+    background-color: #e5e7eb; /* Abu-abu muda */
+    font-size: 1.2rem;
+    color: #4b5563;
+    cursor: default;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    position: relative; /* Untuk pseudo-elements */
+}
+/* Status Chamber */
+.rr-chamber.fired-blank {
+    background-color: #dcfce7; /* Hijau sukses */
+    border-color: #86efac;
+    color: #166534;
+    font-size: 1.5rem; /* Emoji check */
+}
+.rr-chamber.fired-blank::before {
+    content: '✔';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+.rr-chamber.fired-live {
+    background-color: #fee2e2; /* Merah error */
+    border-color: #fca5a5;
+    color: #b91c1c;
+    font-size: 1.5rem; /* Emoji skull */
+}
+.rr-chamber.fired-live::before {
+    content: '💀';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+/* Hide number when icon appears */
+.rr-chamber.fired-blank, .rr-chamber.fired-live {
+    font-size: 0; /* Sembunyikan angka */
+}
+
+
+.rr-actions {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.rr-actions button {
+    min-width: 120px; /* Lebar minimal tombol */
+    padding: 0.9rem 2rem;
+}
+.rr-actions button i {
+    margin-right: 8px;
+}
+.rr-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Area Pesan Game */
+#gameMessage {
+    min-height: 60px; /* Jaga tinggi */
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-align: center;
+}
+#gameMessage.loading {
+    color: #6b7280;
+    font-style: italic;
+}
+#gameMessage .spinner {
+    font-size: 1.2rem;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 10px;
+    color: #4f46e5;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Result Container (jika ada) */
+.rr-result-container h1 {
+    font-size: 1.8rem;
+}
+.rr-result-container .message {
+    font-size: 1.1rem;
+    padding: 1.5rem;
+}

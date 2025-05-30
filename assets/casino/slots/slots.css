@@ -1,0 +1,277 @@
+/* casino/slots/slots.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.slot-machine-container {
+    background-color: #34495e;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    color: #f1c40f;
+    margin-bottom: 25px;
+}
+
+.slot-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1f2b38;
+    border: 5px solid #f39c12;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    padding: 20px;
+    height: 100px; /* Tinggi tetap untuk reel */
+    overflow: hidden; /* Sembunyikan overflow saat animasi */
+}
+
+.reel {
+    font-size: 3.5rem; /* Ukuran emoji */
+    margin: 0 15px;
+    min-width: 60px; /* Lebar minimum */
+    text-align: center;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    padding: 5px 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    /* Transisi untuk efek berhenti */
+    transition: transform 0.1s ease-out;
+}
+
+/* Animasi Spin */
+.reel.spinning {
+    animation: spinReel 0.1s linear infinite;
+}
+
+@keyframes spinReel { /* Ini hanya placeholder visual, JS yg akan ganti emoji */
+    0% { transform: translateY(-5px); }
+    50% { transform: translateY(5px); }
+    100% { transform: translateY(-5px); }
+}
+
+
+.controls {
+    margin-bottom: 25px;
+}
+
+#spinButton {
+padding: 12px 30px;
+font-size: 1.2rem;
+background-color: #e74c3c;
+color: white;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.2s, opacity 0.2s;
+margin-bottom: 15px;
+}
+
+#spinButton:hover:not(:disabled) {
+background-color: #c0392b;
+}
+
+#spinButton:disabled {
+background-color: #95a5a6;
+cursor: not-allowed;
+opacity: 0.7;
+}
+
+.bet-selector {
+    display: flex;
+    flex-wrap: wrap; /* Biarkan tombol pindah baris jika tidak muat */
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.bet-option {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    min-width: 100px; /* Agar ukuran tombol konsisten */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.bet-option:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.bet-option:disabled {
+    background-color: #7f8c8d;
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+    transform: none;
+}
+.bet-option.selected {
+    background-color: #f1c40f;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 0 10px #f1c40f;
+}
+
+.selected-bet-display {
+    font-size: 1rem;
+    color: #bdc3c7;
+    margin-top: 10px;
+}
+
+
+.info-display {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.info-display > div {
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+.info-display > div:last-child {
+    margin-bottom: 0;
+}
+
+.paytable-title-display span,
+.user-balance-display span {
+    font-weight: bold;
+    color: #f1c40f;
+}
+#winAmount {
+color: #2ecc71; /* Warna hijau untuk jumlah menang */
+}
+
+
+.vault-display {
+    text-align: left; /* Align teks dan bar ke kiri */
+}
+.vault-label {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #bdc3c7;
+}
+.vault-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #1f2b38;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    border: 1px solid #7f8c8d;
+    position: relative; /* Untuk animasi angka */
+}
+.vault-bar {
+    height: 100%;
+    width: 0%; /* Lebar awal, diatur oleh JS */
+    background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71); /* Gradasi warna */
+    background-size: 300% 100%; /* Ukuran untuk animasi gradasi */
+    border-radius: 10px 0 0 10px;
+    transition: width 0.5s ease-in-out, background-position 1s linear infinite; /* Transisi lebar & animasi gradasi */
+    animation: gradientShift 3s linear infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.vault-amount {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fff;
+    text-align: right; /* Angka di kanan */
+    transition: color 0.3s ease; /* Transisi warna untuk efek flash */
+}
+
+/* Efek Flash GTA SA Style */
+.vault-amount.increase {
+    animation: flash-green 0.5s ease-out;
+}
+.vault-amount.decrease {
+    animation: flash-red 0.5s ease-out;
+}
+
+@keyframes flash-green {
+    0% { color: #2ecc71; transform: scale(1.1); }
+    50% { color: #fff; transform: scale(1); }
+    100% { color: #fff; transform: scale(1); }
+}
+@keyframes flash-red {
+    0% { color: #e74c3c; transform: scale(1.1); }
+    50% { color: #fff; transform: scale(1); }
+    100% { color: #fff; transform: scale(1); }
+}
+
+.message-area {
+    margin-top: 15px;
+    min-height: 20px;
+    font-weight: bold;
+}
+.message-area.success {
+    color: #2ecc71;
+}
+.message-area.error {
+    color: #e74c3c;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .slot-machine-container {
+        padding: 20px;
+    }
+    .reel {
+        font-size: 2.8rem;
+        margin: 0 10px;
+        min-width: 45px;
+    }
+    .slot-display {
+        height: 80px;
+        padding: 15px;
+    }
+    .bet-option {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        min-width: 80px;
+    }
+    #spinButton {
+    font-size: 1rem;
+    padding: 10px 20px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}

@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['user'] = $user['username']; // Simpan username
             $_SESSION['role'] = $user['role']; // Simpan role user
 
-            header("Location: /dashboard"); // Redirect ke dashboard
+            header("Location: /profile"); // Redirect ke dashboard
             exit();
         } else {
             header("Location: index.php?error=Password salah");
