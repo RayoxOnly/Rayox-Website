@@ -155,10 +155,5 @@ Contributions, issues, and feature requests are welcome! Feel free to check [iss
 
 This project is [MIT](https://choosealicense.com/licenses/mit/) licensed.
 
-## 👤 Contact
-
-For any inquiries or support, please contact:
-[Your Contact Information]
-
 ---
 ⭐️ From RayoxOnly
