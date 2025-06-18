@@ -1,14 +1,37 @@
+<?php
+require_once 'config.php';
+setSecurityHeaders();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rayox.site - A modern community platform for gaming and social interaction. Join our growing community today!">
+  <meta name="keywords" content="Rayox, community, gaming, social platform, online casino">
+  <meta name="author" content="Rayox.site">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<?= SITE_URL ?>">
+  <meta property="og:title" content="Rayox.site - Community Platform">
+  <meta property="og:description" content="A modern web application for community building and gaming">
+  <meta property="og:image" content="<?= SITE_URL ?>/assets/logo.png">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<?= SITE_URL ?>">
+  <meta property="twitter:title" content="Rayox.site - Community Platform">
+  <meta property="twitter:description" content="A modern web application for community building and gaming">
+  <meta property="twitter:image" content="<?= SITE_URL ?>/assets/logo.png">
+  
   <title>Rayox | Homepage</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <link rel="manifest" href="/assets/site.webmanifest">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
   <style>
     * {
       margin: 0;

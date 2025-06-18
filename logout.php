@@ -1,11 +1,23 @@
 <?php
-// File: logout.php (File Baru)
-session_start(); // Akses session yang sedang aktif
+require_once 'config.php';
 
-// 1. Hapus semua variabel session
+// Set security headers
+setSecurityHeaders();
+
+// Start secure session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Log logout activity if user was logged in
+if (isset($_SESSION['user_id'])) {
+    logActivity($_SESSION['user_id'], 'logout', 'User logged out');
+}
+
+// Clear all session variables
 $_SESSION = array();
 
-// 2. Jika menggunakan cookie session (opsional tapi bagus), hapus cookie-nya
+// Delete session cookie if it exists
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
@@ -14,10 +26,10 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// 3. Hancurkan session
+// Destroy the session
 session_destroy();
 
-// 4. Redirect ke halaman login dengan pesan
-header("Location: /login?status=Anda telah berhasil logout.");
+// Redirect to login page with success message
+header("Location: /login?status=You have been successfully logged out.");
 exit();
 ?>

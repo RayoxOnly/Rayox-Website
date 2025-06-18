@@ -1,5 +1,11 @@
+<?php
+require_once '../config.php';
+setSecurityHeaders();
+secureSession();
+$csrf_token = generateCSRFToken();
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register | Rayox</title>
@@ -7,7 +13,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
 <link rel="manifest" href="/assets/site.webmanifest">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
     /* Salin CSS dari halaman Login yang dimodifikasi */
     * {
@@ -202,32 +208,61 @@
     <?php endif; ?>
 
     <form method="POST" action="register_process.php">
+        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+        
         <div class="input-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" required placeholder="Masukkan username baru">
+            <input type="text" id="username" name="username" required placeholder="Enter new username" autocomplete="username" pattern="[a-zA-Z0-9_]{3,20}" title="Username must be 3-20 characters long and contain only letters, numbers, and underscores">
         </div>
 
         <div class="input-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required placeholder="Masukkan password baru">
-            </div>
+            <input type="password" id="password" name="password" required placeholder="Enter new password" autocomplete="new-password" minlength="8" title="Password must be at least 8 characters long">
+        </div>
 
-        <button type="submit" class="btn btn-register"><i class="fas fa-user-plus"></i> Daftar</button> </form>
+        <button type="submit" class="btn btn-register"><i class="fas fa-user-plus"></i> Register</button>
+    </form>
 
-    <div class="login-link"> Sudah punya akun? <a href="/login">Login disini</a>
+    <div class="login-link">
+        Already have an account? <a href="/login">Login here</a>
     </div>
 </div>
 
 <script>
-    // Script fade out message - Sama seperti Login
-    const errorMessage = document.getElementById('errorMessage');
-    if (errorMessage) {
-        errorMessage.classList.add('fade-out');
-    }
-    const successMessage = document.getElementById('successMessage');
-     if (successMessage) {
-        successMessage.classList.add('fade-out');
-    }
+    // Auto-hide messages after 5 seconds
+    const messages = document.querySelectorAll('.message');
+    messages.forEach(message => {
+        setTimeout(() => {
+            message.classList.add('fade-out');
+        }, 2000);
+    });
+    
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        
+        if (!username || !password) {
+            e.preventDefault();
+            alert('Please fill in all fields');
+            return false;
+        }
+        
+        // Validate username pattern
+        const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
+        if (!usernamePattern.test(username)) {
+            e.preventDefault();
+            alert('Username must be 3-20 characters long and contain only letters, numbers, and underscores');
+            return false;
+        }
+        
+        // Validate password length
+        if (password.length < 8) {
+            e.preventDefault();
+            alert('Password must be at least 8 characters long');
+            return false;
+        }
+    });
 </script>
 
 </body>

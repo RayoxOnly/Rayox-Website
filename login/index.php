@@ -1,5 +1,11 @@
+<?php
+require_once '../config.php';
+setSecurityHeaders();
+secureSession();
+$csrf_token = generateCSRFToken();
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login | Rayox</title>
@@ -7,7 +13,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
 <link rel="manifest" href="/assets/site.webmanifest">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
     * {
         margin: 0;
@@ -204,33 +210,46 @@
 
 
     <form method="POST" action="login_process.php">
+        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+        
         <div class="input-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Masukkan username Anda" required>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
         </div>
 
         <div class="input-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Masukkan password Anda" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
         </div>
 
         <button type="submit" class="btn btn-login"><i class="fas fa-sign-in-alt"></i> Login</button>
-
     </form>
+    
     <div class="register-link">
-        Belum punya akun? <a href="/register">Daftar disini</a>
+        Don't have an account? <a href="/register">Register here</a>
     </div>
 </div>
 
 <script>
-    const errorMessage = document.getElementById('errorMessage');
-    if (errorMessage) {
-        errorMessage.classList.add('fade-out');
-    }
-    const successMessage = document.getElementById('successMessage');
-     if (successMessage) {
-        successMessage.classList.add('fade-out');
-    }
+    // Auto-hide messages after 5 seconds
+    const messages = document.querySelectorAll('.message');
+    messages.forEach(message => {
+        setTimeout(() => {
+            message.classList.add('fade-out');
+        }, 2000);
+    });
+    
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        
+        if (!username || !password) {
+            e.preventDefault();
+            alert('Please fill in all fields');
+            return false;
+        }
+    });
 </script>
 
 </body>
