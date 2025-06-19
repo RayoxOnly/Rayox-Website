@@ -65,6 +65,14 @@ try {
              'creator_pfp' => $game_state['creator_pfp'],   // <-- PFP Creator
              'opponent_pfp' => $game_state['opponent_pfp'], // <-- PFP Opponent
         ];
+        // Tambahkan chamber_fired_live jika game sudah selesai
+        if ($game_state['status'] === 'finished') {
+            $fired = !empty($game_state['chambers_fired']) ? explode(',', $game_state['chambers_fired']) : [];
+            $live_chamber = isset($game_state['live_chamber']) ? (int)$game_state['live_chamber'] : null;
+            if ($live_chamber && in_array((string)$live_chamber, $fired)) {
+                $response['game_state']['chamber_fired_live'] = $live_chamber;
+            }
+        }
     } else {
          $response['message'] = 'Permainan tidak ditemukan atau Anda tidak terlibat.';
          $response['game_state'] = ['status' => 'not_found']; // Tandai status khusus

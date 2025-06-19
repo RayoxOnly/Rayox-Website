@@ -79,6 +79,12 @@ $status_message = $_SESSION['status_message'] ?? null;
 $error_message = $_SESSION['error_message'] ?? null;
 unset($_SESSION['status_message'], $_SESSION['error_message']); // Hapus pesan setelah dibaca
 
+// CSRF token setup
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -109,6 +115,7 @@ unset($_SESSION['status_message'], $_SESSION['error_message']); // Hapus pesan s
         <section class="rr-section">
             <h2><i class="fas fa-plus-circle"></i> Buat Game Baru</h2>
             <form action="create_game.php" method="POST" class="rr-form">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="bet_amount"><i class="fas fa-coins"></i> Jumlah Taruhan:</label>
                     <input type="number" id="bet_amount" name="bet_amount" min="100" placeholder="Minimal $100" required>
@@ -148,6 +155,7 @@ unset($_SESSION['status_message'], $_SESSION['error_message']); // Hapus pesan s
                                 <td class="actions">
                                     <?php if ($user_money >= $game['bet_amount']): ?>
                                     <form action="join_game.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                         <input type="hidden" name="game_id" value="<?php echo $game['id']; ?>">
                                         <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-sign-in-alt"></i> Join</button>
                                     </form>

@@ -15,6 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['game_id'])) {
     exit();
 }
 
+// CSRF check
+if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
+    $_SESSION['error_message'] = 'CSRF token tidak valid.';
+    header('Location: index.php');
+    exit();
+}
+
 $user_id = $_SESSION['user_id'];
 $game_id = filter_input(INPUT_POST, 'game_id', FILTER_VALIDATE_INT);
 

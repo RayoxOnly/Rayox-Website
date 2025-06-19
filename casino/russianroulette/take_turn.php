@@ -99,6 +99,7 @@ try {
             'game_over' => true,
             'hit' => true,
             'chamber_fired' => $chamber_to_fire,
+            'chamber_fired_live' => $chamber_to_fire,
             'winner_id' => $winner_id,
             'loser_id' => $loser_id,
             'payout' => $pot,

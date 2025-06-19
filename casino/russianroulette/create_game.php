@@ -15,6 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+// CSRF check
+if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
+    $_SESSION['error_message'] = 'CSRF token tidak valid.';
+    header('Location: index.php');
+    exit();
+}
+
 $user_id = $_SESSION['user_id'];
 $bet_amount = filter_input(INPUT_POST, 'bet_amount', FILTER_VALIDATE_INT);
 $max_chambers = filter_input(INPUT_POST, 'max_chambers', FILTER_VALIDATE_INT, [
@@ -56,20 +63,11 @@ try {
         throw new Exception("Saldo Anda tidak cukup ($" . number_format($current_balance) . ") untuk membuat meja dengan taruhan $" . number_format($bet_amount) . ".");
     }
 
-     // 3. Cek apakah user sudah punya game aktif atau waiting
-     $stmt_check_game = $conn->prepare("SELECT id FROM roulette_games WHERE (creator_id = ? OR opponent_id = ?) AND status IN ('waiting', 'active') LIMIT 1");
-     if (!$stmt_check_game) throw new Exception("Gagal menyiapkan cek game: " . $conn->error);
-     $stmt_check_game->bind_param("ii", $user_id, $user_id);
-     $stmt_check_game->execute();
-     $result_check_game = $stmt_check_game->get_result();
-     if ($result_check_game->num_rows > 0) {
-         $existing_game = $result_check_game->fetch_assoc();
-         if ($existing_game) { // Tambah cek $existing_game
-             throw new Exception("Anda sudah memiliki permainan yang sedang menunggu atau aktif (ID: ".$existing_game['id']."). Selesaikan atau batalkan dulu.");
-         }
-     }
-     $stmt_check_game->close();
-
+    // 3. Cek apakah user sudah punya game aktif atau waiting
+    $existing_game_id = check_user_has_active_or_waiting_game($conn, $user_id);
+    if ($existing_game_id) {
+        throw new Exception("Anda sudah memiliki permainan yang sedang menunggu atau aktif (ID: ".$existing_game_id."). Selesaikan atau batalkan dulu.");
+    }
 
     // 4. Kurangi Saldo User
     $stmt_update_user = $conn->prepare("UPDATE users SET money = money - ? WHERE id = ?");

@@ -42,6 +42,22 @@ function log_roulette_action($game_id, $user_id, $action) {
     }
 }
 
+// Helper function to check if user has active or waiting game
+function check_user_has_active_or_waiting_game($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT id FROM roulette_games WHERE (creator_id = ? OR opponent_id = ?) AND status IN ('waiting', 'active') LIMIT 1");
+    if (!$stmt) return false;
+    $stmt->bind_param("ii", $user_id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $stmt->close();
+        return $row['id'];
+    }
+    $stmt->close();
+    return false;
+}
+
 // Jangan tutup koneksi di sini ($conn->close();)
 // Biarkan file yang meng-include file ini yang menutup koneksi setelah selesai.
 ?>

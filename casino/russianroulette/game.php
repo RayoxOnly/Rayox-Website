@@ -103,6 +103,7 @@ if ($game_data['status'] === 'waiting') {
      echo "<div class='message info'><i class='fas fa-spinner fa-spin'></i> Menunggu lawan untuk bergabung... Taruhan: $" . number_format($game_data['bet_amount']) . "</div>";
      if ($is_creator) {
          echo "<form action='cancel_game.php' method='POST' onsubmit=\"return confirm('Yakin ingin membatalkan meja ini? Taruhan akan dikembalikan.');\" style='margin-top:1rem;'>";
+         echo "<input type='hidden' name='csrf_token' value='" . htmlspecialchars($_SESSION['csrf_token'] ?? '') . "'>";
          echo "<input type='hidden' name='game_id' value='$game_id'>";
          echo "<button type='submit' class='btn btn-danger'>Batalkan Meja</button>";
          echo "</form>";
@@ -224,9 +225,10 @@ $js_game_data = [
             <a href="index.php" class="btn btn-secondary btn-sm"><i class="fas fa-list-ul"></i> Kembali ke Lobi</a>
              <?php if ($game_data['status'] === 'active' && $is_creator): // Tombol batal hanya jika kreator & game aktif ?>
                 <form action="cancel_game.php" method="POST" onsubmit="return confirm('Yakin ingin membatalkan permainan ini? Taruhan mungkin tidak kembali.');" style="display:inline; margin-left: 10px;">
-                    <input type='hidden' name='game_id' value='<?php echo $game_id; ?>'>
-                    <button type='submit' class='btn btn-warning btn-sm'><i class='fas fa-times'></i> Batalkan</button>
-                 </form>
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
+                    <input type="hidden" name="game_id" value="<?php echo $game_id; ?>">
+                    <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-times"></i> Batalkan</button>
+                </form>
              <?php endif; ?>
         </div>
 
