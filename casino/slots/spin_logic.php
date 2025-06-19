@@ -119,6 +119,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['bet_amount'])) {
     echo json_encode($response);
     exit();
 }
+if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
+    $response['message'] = 'CSRF token tidak valid.';
+    echo json_encode($response);
+    exit();
+}
+if (isset($_SESSION['slots_last_spin']) && (time() - $_SESSION['slots_last_spin']) < 2) {
+    $response['message'] = 'Tunggu sebentar sebelum spin berikutnya!';
+    echo json_encode($response);
+    exit();
+}
+$_SESSION['slots_last_spin'] = time();
 
 $user_id = $_SESSION['user_id'];
 $bet_amount = filter_input(INPUT_POST, 'bet_amount', FILTER_VALIDATE_INT);
@@ -200,9 +211,52 @@ try {
     if (!$stmt_update_vault->execute()) throw new Exception("Gagal update vault slots setelah bet.");
     $stmt_update_vault->close();
 
-    // --- 4. Generate Hasil Slot Menggunakan Bobot Hasil (BARU) ---
-    $selected_outcome_key = getRandomWeightedElement($outcome_weights);
-    $reel_results = keyToEmojiArray($selected_outcome_key); // Tentukan visual reel
+    // --- RTP-based Dynamic Outcome Selection ---
+    $RTP = 0.9; // 90% RTP
+    $possible_outcomes = [];
+    $total_probability = 0;
+    foreach ($paytable as $key => $data) {
+        if ($key === '7️⃣7️⃣7️⃣') continue; // Jackpot handled separately
+        $rate = $data['rate'];
+        $payout = is_numeric($rate) ? $bet_amount * $rate : 0;
+        if ($payout > $new_vault) continue; // Skip if vault can't pay
+        $prob = 1 / ($rate * 20); // Lower payout = higher chance, tune denominator for volatility
+        $possible_outcomes[$key] = $prob;
+        $total_probability += $prob;
+    }
+    // Add NO_WIN outcome to fill up to RTP
+    $expected_payout = 0;
+    foreach ($possible_outcomes as $key => $prob) {
+        $rate = $paytable[$key]['rate'];
+        $payout = is_numeric($rate) ? $bet_amount * $rate : 0;
+        $expected_payout += $prob * $payout;
+    }
+    $prob_no_win = max(0, 1 - ($expected_payout / ($RTP * $bet_amount)));
+    $possible_outcomes['NO_WIN'] = $prob_no_win;
+    $total_probability += $prob_no_win;
+    // Normalize probabilities
+    foreach ($possible_outcomes as $key => &$prob) {
+        $prob = $prob / $total_probability;
+    }
+    unset($prob);
+    // --- Jackpot logic (rare, vault-based) ---
+    $jackpot_chance = 0.00005; // 0.005% per spin (1 in 20,000)
+    if ($new_vault > 0 && mt_rand() / mt_getrandmax() < $jackpot_chance) {
+        $selected_outcome_key = '7️⃣7️⃣7️⃣';
+    } else {
+        // Weighted random selection
+        $rand = mt_rand() / mt_getrandmax();
+        $cumulative = 0;
+        foreach ($possible_outcomes as $key => $prob) {
+            $cumulative += $prob;
+            if ($rand <= $cumulative) {
+                $selected_outcome_key = $key;
+                break;
+            }
+        }
+        if (!isset($selected_outcome_key)) $selected_outcome_key = 'NO_WIN';
+    }
+    $reel_results = keyToEmojiArray($selected_outcome_key);
 
     // --- 5. Cek Hasil & Hitung Kemenangan (Logika Disederhanakan) ---
     $win_amount = 0;

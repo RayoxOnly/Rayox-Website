@@ -59,6 +59,12 @@ $bet_options = [10, 100, 1000, 10000, 100000, 1000000, 10000000];
 // Definisikan emoji yang akan digunakan (sesuai paytable)
 // Pastikan semua emoji di paytable ada di sini + emoji lain jika perlu
 $emojis = ['🦇', '🦆', '🍫', '🔫', '🧑', '🚗', '☣️', '7️⃣']; // Tambahkan emoji lain jika ingin variasi
+
+// CSRF token setup
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -125,6 +131,7 @@ const initialVaultAmount = <?php echo $vault_amount; ?>;
 const availableEmojis = <?php echo json_encode($emojis); ?>;
 const betOptions = <?php echo json_encode($bet_options); ?>;
 const userId = <?php echo $user_id; ?>; // User ID jika diperlukan di JS
+const csrfToken = <?php echo json_encode($csrf_token); ?>;
 </script>
 <script src="slots.js"></script>
 </body>

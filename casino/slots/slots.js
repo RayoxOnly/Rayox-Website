@@ -200,7 +200,7 @@ spinButton.on('click', function() {
         url: 'spin_logic.php',
         type: 'POST',
         dataType: 'json',
-        data: { bet_amount: currentBet },
+        data: { bet_amount: currentBet, csrf_token: csrfToken },
         success: function(response) {
             if (response.success) {
                 stopSpinAnimation(response.reels, response.win_title, response.win_amount);
