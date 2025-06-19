@@ -36,9 +36,9 @@ if (!isset($_SESSION['user']) || !isset($_SESSION['role']) || $_SESSION['role'] 
         <ul>
             <li><a href="/admin/saran/"><i class="fas fa-envelope-open-text"></i> Lihat Saran Pengguna</a></li>
             <li><a href="/admin/changelogs/"><i class="fas fa-history"></i> Kelola Changelogs</a></li>
-            <li><a href="#"><i class="fas fa-users-cog"></i> Manajemen User (Soon™)</a></li>
-            <li><a href="#"><i class="fas fa-cogs"></i> Pengaturan Umum (Soon™)</a></li>
-            </ul>
+            <li><a href="/admin/users.php"><i class="fas fa-users-cog"></i> Manajemen User</a></li>
+            <li><a href="/admin/settings.php"><i class="fas fa-cogs"></i> Pengaturan Umum</a></li>
+        </ul>
     </div>
 
     <div class="logout-link-container">
