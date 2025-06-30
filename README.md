@@ -1,6 +1,6 @@
 # Rayox Web Application
 
-![Rayox Banner](assets/LOGO/Banner(Dark).jpg)
+![Rayox Banner](assets/LOGO/Banner(Light).jpg)
 
 A modern web application built with PHP that provides a sleek and responsive user interface for various functionalities.
 
