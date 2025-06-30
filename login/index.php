@@ -10,8 +10,8 @@ $csrf_token = generateCSRFToken();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login | Rayox</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/LOGO/favicon32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/LOGO/favicon16x16.png">
 <link rel="manifest" href="/assets/site.webmanifest">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
